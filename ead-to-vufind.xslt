@@ -43,6 +43,11 @@
       <!-- id och title för den posten vi migrerar i samlingen -->
       <field name="hierarchy_id"><xsl:value-of select="did/unitid"/></field>
       <field name="hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
+      <!-- Här sättas hierarchy_browse till parent title och id (från variablerna som sättas i början).
+           Krävs om collection identifier är "All". -->
+      <field name="hierarchy_browse"><xsl:value-of select="$parent_title"/>{{{_ID_}}}<xsl:value-of select="$parent_id"/></field>
+      <!-- Om collection identifier är "Top" måste vi sätta denna med top_id och top_title. Använd då följande istället. -->
+      <!-- <field name="hierarchy_browse"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/>{{{_ID_}}}<xsl:value-of select="/ead/eadheader/eadid"/></field> -->
       <!-- Skriva ut hela hierarkien till hierarchy_all_parents_str_mv, yttersta nivån ligger inte
            i en c-tagg så ska skrivas ut särskild -->
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
