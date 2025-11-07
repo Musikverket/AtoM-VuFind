@@ -4,6 +4,13 @@
   <xsl:output encoding="UTF-8" indent="yes"/>
   <xsl:template match="/">
     <add overwrite="true">
+      <!-- Top-posten läggas in separat och särbehandlas då den inte ligger i en c-tagg och inte har någon parent -->
+      <doc>
+        <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
+        <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
+        <field name="hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+      </doc>
       <xsl:apply-templates select="//c"/>
     </add>
   </xsl:template>
