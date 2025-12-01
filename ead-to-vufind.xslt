@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <!-- Skriv ut lokal/specialkaraktärer som UTF-8 och prä-formattera outputtet på ett läsbart sätt -->
   <xsl:output encoding="UTF-8" indent="yes"/>
   <xsl:template match="/">
     <add overwrite="true">
-      <!-- Top-posten läggas in separat och särbehandlas då den inte ligger i en c-tagg och inte har någon parent -->
+      <!-- Process the top record separately as it's not in a c-tag and doesn't have a parent record. -->
       <doc>
+        <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
+        <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="hierarchytype"/>
         <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
-        <field name="hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
-        <field name="hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
+        <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
       </doc>
       <xsl:apply-templates select="//c"/>
     </add>
   </xsl:template>
   <xsl:template match="c">
-    <!-- I näst-yttersta nivån av samlingshierarkien kommer parent vara en <dsc> tagg och inte en <c> tagg,
-         så vi måste testa för detta när vi hittar parent_id och parent_title.
-         Vi sätter dem som variabler då vi kan komma att återanvända dessa värden även i hierarchy_browse -->
+    <!-- In the second level below the top post, the parent is a <dsc> tag and not a <c> tag,
+         so we need to test for this when we set parent_id and parent_title.
+         We set them as "variables" (they are actually constants) so we can reuse them in hierarchy_browse -->
     <xsl:variable name="parent_id">
       <xsl:choose>
         <xsl:when test="parent::c">
@@ -39,24 +43,31 @@
       </xsl:choose>
     </xsl:variable>
     <doc>
-      <!-- Vi migrerar en hel samling, och då kommer top_id och top_title alltid vara samma (den samlingen vi migrerar). -->
+      <!-- Limited set of metadata -->
+      <field name="id"><xsl:value-of select="did/unitid"/></field>
+      <field name="title"><xsl:value-of select="did/unittitle"/></field>
+      <field name="title_full"><xsl:value-of select="did/unittitle"/></field>
+      <field name="title_short"><xsl:value-of select="did/unittitle"/></field>
+      <!-- We index an entire collection, so top_id and top_title will be the same for all records in
+           the collection. -->
+      <field name="hierarchytype"/>
       <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
       <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
-      <!-- Parents sättas nu från variablerna vi definierade ovan -->
+      <!-- Set parent from the previously defined variables. -->
       <field name="hierarchy_parent_id"><xsl:value-of select="$parent_id"/></field>
       <field name="hierarchy_parent_title"><xsl:value-of select="$parent_title"/></field>
-      <!-- Sortering av elementer på samma nivå i trädstrukturen. Här sorterar vi på unittitle. -->
+      <!-- Sort child elements on the same level in the hierarchy. Here we sort on unittitle. -->
       <field name="hierarchy_sequence"><xsl:value-of select="did/unittitle"/></field>
-      <!-- id och title för den posten vi migrerar i samlingen -->
-      <field name="hierarchy_id"><xsl:value-of select="did/unitid"/></field>
-      <field name="hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
-      <!-- Här sättas hierarchy_browse till parent title och id (från variablerna som sättas i början).
-           Krävs om collection identifier är "All". -->
+      <!-- Id and title for the record we want to index -->
+      <field name="is_hierarchy_id"><xsl:value-of select="did/unitid"/></field>
+      <field name="is_hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
+      <!-- Here we set hierarchy_browse to parent title and id (from the variables above).
+           Required if the collection identifier is "All". -->
       <field name="hierarchy_browse"><xsl:value-of select="$parent_title"/>{{{_ID_}}}<xsl:value-of select="$parent_id"/></field>
-      <!-- Om collection identifier är "Top" måste vi sätta denna med top_id och top_title. Använd då följande istället. -->
+      <!-- If the collection identifier is "Top", we need to set them with top_id och top_title instead: -->
       <!-- <field name="hierarchy_browse"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/>{{{_ID_}}}<xsl:value-of select="/ead/eadheader/eadid"/></field> -->
-      <!-- Skriva ut hela hierarkien till hierarchy_all_parents_str_mv, yttersta nivån ligger inte
-           i en c-tagg så ska skrivas ut särskild -->
+      <!-- Write out the entire hierarchy to hierarchy_all_parents_str_mv, the outermost level is not
+           in a c-tag, so is written out separately -->
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
       <xsl:for-each select="ancestor::c">
         <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="did/unitid"/></field>
