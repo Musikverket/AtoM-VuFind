@@ -5,15 +5,19 @@
     <add overwrite="true">
       <!-- Process the top record separately as it's not in a c-tag and doesn't have a parent record. -->
       <doc>
+        <field name="record_format">atom</field>
         <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
+        <field name="institution"><xsl:value-of select="/ead/archdesc/did/repository/corpname"/></field>
         <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="hierarchytype"/>
         <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="notes_str_mv"><xsl:value-of select="/ead/archdesc/scopecontent"/></field>
       </doc>
       <xsl:apply-templates select="//c"/>
     </add>
@@ -43,13 +47,16 @@
       </xsl:choose>
     </xsl:variable>
     <doc>
+      <field name="record_format">atom</field>
       <!-- Limited set of metadata -->
       <field name="id"><xsl:value-of select="did/unitid"/></field>
+      <field name="institution"><xsl:value-of select="did/repository/corpname"/></field>
       <field name="title"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_full"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_short"><xsl:value-of select="did/unittitle"/></field>
       <!-- We index an entire collection, so top_id and top_title will be the same for all records in
            the collection. -->
+      <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
       <field name="hierarchytype"/>
       <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
       <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
@@ -69,9 +76,19 @@
       <!-- Write out the entire hierarchy to hierarchy_all_parents_str_mv, the outermost level is not
            in a c-tag, so is written out separately -->
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
+      <xsl:if test="controlaccess/subject">
+        <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
+      </xsl:if>
+      <xsl:if test="/ead/archdesc/controlaccess/subject">
+        <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
+      </xsl:if>
       <xsl:for-each select="ancestor::c">
         <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="did/unitid"/></field>
+        <xsl:if test="controlaccess/subject">
+          <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
+        </xsl:if>
       </xsl:for-each>
+      <field name="notes_str_mv"><xsl:value-of select="scopecontent"/></field>
     </doc>
   </xsl:template>
 </xsl:stylesheet>
