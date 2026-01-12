@@ -17,8 +17,15 @@
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <xsl:if test="/ead/archdesc/did/unitdate">
+          <field name="dateSpan"><xsl:value-of select="/ead/archdesc/did/unitdate"/></field>
+        </xsl:if>
         <xsl:if test="/ead/archdesc/did/physdesc">
           <field name="physical"><xsl:value-of select="/ead/archdesc/did/physdesc"/></field>
+        </xsl:if>
+        <xsl:if test="/ead/archdesc/controlaccess/subject">
+          <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
+          <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
         </xsl:if>
         <!-- <field name="contents"><xsl:value-of select="/ead/archdesc/scopecontent"/></field> -->
         <xsl:apply-templates select="/ead/archdesc/scopecontent/p/text()"/>
@@ -86,16 +93,22 @@
       <xsl:if test="did/physdesc">
         <field name="physical"><xsl:value-of select="did/physdesc"/></field>
       </xsl:if>
+        <xsl:if test="did/unitdate">
+          <field name="dateSpan"><xsl:value-of select="did/unitdate"/></field>
+        </xsl:if>
       <xsl:if test="controlaccess/subject">
         <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
+        <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
       </xsl:if>
       <xsl:if test="/ead/archdesc/controlaccess/subject">
         <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
+        <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
       </xsl:if>
       <xsl:for-each select="ancestor::c">
         <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="did/unitid"/></field>
         <xsl:if test="controlaccess/subject">
           <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
+          <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
         </xsl:if>
       </xsl:for-each>
       <xsl:apply-templates select="scopecontent/p/text()"/>
