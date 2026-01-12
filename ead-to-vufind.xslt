@@ -17,10 +17,14 @@
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
-        <field name="notes_str_mv"><xsl:value-of select="/ead/archdesc/scopecontent"/></field>
+        <!-- <field name="contents"><xsl:value-of select="/ead/archdesc/scopecontent"/></field> -->
+        <xsl:apply-templates select="/ead/archdesc/scopecontent/p/text()"/>
       </doc>
       <xsl:apply-templates select="//c"/>
     </add>
+  </xsl:template>
+  <xsl:template match="text()">
+    <field name="contents"><xsl:value-of select="current()"/></field>
   </xsl:template>
   <xsl:template match="c">
     <!-- In the second level below the top post, the parent is a <dsc> tag and not a <c> tag,
@@ -88,7 +92,8 @@
           <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
         </xsl:if>
       </xsl:for-each>
-      <field name="notes_str_mv"><xsl:value-of select="scopecontent"/></field>
+      <xsl:apply-templates select="scopecontent/p/text()"/>
+      <!-- <field name="contents"><xsl:value-of select="scopecontent"/></field> -->
     </doc>
   </xsl:template>
 </xsl:stylesheet>
