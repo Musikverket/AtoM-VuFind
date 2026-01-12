@@ -17,6 +17,9 @@
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <xsl:if test="/ead/archdesc/did/physdesc">
+          <field name="physical"><xsl:value-of select="/ead/archdesc/did/physdesc"/></field>
+        </xsl:if>
         <!-- <field name="contents"><xsl:value-of select="/ead/archdesc/scopecontent"/></field> -->
         <xsl:apply-templates select="/ead/archdesc/scopecontent/p/text()"/>
       </doc>
@@ -80,6 +83,9 @@
       <!-- Write out the entire hierarchy to hierarchy_all_parents_str_mv, the outermost level is not
            in a c-tag, so is written out separately -->
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
+      <xsl:if test="did/physdesc">
+        <field name="physical"><xsl:value-of select="did/physdesc"/></field>
+      </xsl:if>
       <xsl:if test="controlaccess/subject">
         <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
       </xsl:if>
