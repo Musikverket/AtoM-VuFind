@@ -5,36 +5,49 @@
     <add overwrite="true">
       <!-- Process the top record separately as it's not in a c-tag and doesn't have a parent record. -->
       <doc>
+        <!-- Supposed to direct VuFind to use a custom SolrAtom driver but I didn't quite manage to make this work -->
         <field name="record_format">atom</field>
+
+        <!-- Basic metadata -->
         <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="institution"><xsl:value-of select="/ead/archdesc/did/repository/corpname"/></field>
         <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+
+        <!-- Hierarchical data for the root record -->
         <field name="hierarchytype"/>
         <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+
+        <!-- Dates field. The date here can serve a number of purposes in AtoM (created, archived, etc), but this does
+             not for the moment carry over in the EAD output -->
         <xsl:if test="/ead/archdesc/did/unitdate">
-          <field name="dateSpan"><xsl:value-of select="/ead/archdesc/did/unitdate"/></field>
+          <field name="dates_str"><xsl:value-of select="/ead/archdesc/did/unitdate"/></field>
         </xsl:if>
+        <!-- Physical description -->
         <xsl:if test="/ead/archdesc/did/physdesc">
           <field name="physical"><xsl:value-of select="/ead/archdesc/did/physdesc"/></field>
         </xsl:if>
+        <!-- Subject access points -->
         <xsl:if test="/ead/archdesc/controlaccess/subject">
           <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
           <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
         </xsl:if>
-        <!-- <field name="contents"><xsl:value-of select="/ead/archdesc/scopecontent"/></field> -->
+        <!-- Link to AtoM record -->
+        <field name="url"><xsl:value-of select="/ead/eadheader/eadid/@url"/></field>
+        <!-- Link to AtoM fulltext -->
+        <xsl:if test="/ead/archdesc/did/dao[@linktype = 'simple']">
+          <field name="url"><xsl:value-of select="/ead/archdesc/did/dao/@href"/></field>
+        </xsl:if>
+        <!-- Table of contents -->
         <xsl:apply-templates select="/ead/archdesc/scopecontent/p/text()"/>
       </doc>
       <xsl:apply-templates select="//c"/>
     </add>
-  </xsl:template>
-  <xsl:template match="text()">
-    <field name="contents"><xsl:value-of select="current()"/></field>
   </xsl:template>
   <xsl:template match="c">
     <!-- In the second level below the top post, the parent is a <dsc> tag and not a <c> tag,
@@ -62,12 +75,13 @@
     </xsl:variable>
     <doc>
       <field name="record_format">atom</field>
-      <!-- Limited set of metadata -->
+      <!-- Basic metadata -->
       <field name="id"><xsl:value-of select="did/unitid"/></field>
       <field name="institution"><xsl:value-of select="did/repository/corpname"/></field>
       <field name="title"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_full"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_short"><xsl:value-of select="did/unittitle"/></field>
+      <!-- Hierarchical data -->
       <!-- We index an entire collection, so top_id and top_title will be the same for all records in
            the collection. -->
       <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
@@ -90,20 +104,6 @@
       <!-- Write out the entire hierarchy to hierarchy_all_parents_str_mv, the outermost level is not
            in a c-tag, so is written out separately -->
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
-      <xsl:if test="did/physdesc">
-        <field name="physical"><xsl:value-of select="did/physdesc"/></field>
-      </xsl:if>
-        <xsl:if test="did/unitdate">
-          <field name="dateSpan"><xsl:value-of select="did/unitdate"/></field>
-        </xsl:if>
-      <xsl:if test="controlaccess/subject">
-        <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
-        <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
-      </xsl:if>
-      <xsl:if test="/ead/archdesc/controlaccess/subject">
-        <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-        <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-      </xsl:if>
       <xsl:for-each select="ancestor::c">
         <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="did/unitid"/></field>
         <xsl:if test="controlaccess/subject">
@@ -111,8 +111,30 @@
           <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
         </xsl:if>
       </xsl:for-each>
+
+      <!-- Physical description -->
+      <xsl:if test="did/physdesc">
+        <field name="physical"><xsl:value-of select="did/physdesc"/></field>
+      </xsl:if>
+      <!-- Dates field. The date here can serve a number of purposes in AtoM (created, archived, etc), but this does
+           not for the moment carry over in the EAD output -->
+      <xsl:if test="did/unitdate">
+        <field name="dates_str"><xsl:value-of select="did/unitdate"/></field>
+      </xsl:if>
+      <xsl:if test="controlaccess/subject">
+        <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
+        <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
+      </xsl:if>
+      <!-- Subject access points -->
+      <xsl:if test="/ead/archdesc/controlaccess/subject">
+        <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
+        <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
+      </xsl:if>
+      <!-- Table of contents -->
       <xsl:apply-templates select="scopecontent/p/text()"/>
-      <!-- <field name="contents"><xsl:value-of select="scopecontent"/></field> -->
     </doc>
+  </xsl:template>
+  <xsl:template match="text()">
+    <field name="contents"><xsl:value-of select="current()"/></field>
   </xsl:template>
 </xsl:stylesheet>
