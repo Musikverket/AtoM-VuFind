@@ -91,8 +91,8 @@
       <!-- Set parent from the previously defined variables. -->
       <field name="hierarchy_parent_id"><xsl:value-of select="$parent_id"/></field>
       <field name="hierarchy_parent_title"><xsl:value-of select="$parent_title"/></field>
-      <!-- Sort child elements on the same level in the hierarchy. Here we sort on unittitle. -->
-      <field name="hierarchy_sequence"><xsl:value-of select="did/unittitle"/></field>
+      <!-- Sort child elements on the same level in the hierarchy. Here we sort on unitid. -->
+      <field name="hierarchy_sequence"><xsl:value-of select="did/unitid"/></field>
       <!-- Id and title for the record we want to index -->
       <field name="is_hierarchy_id"><xsl:value-of select="did/unitid"/></field>
       <field name="is_hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
