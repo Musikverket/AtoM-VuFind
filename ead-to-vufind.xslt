@@ -9,7 +9,7 @@
 
         <!-- Basic metadata -->
         <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
-        <field name="institution"><xsl:value-of select="/ead/archdesc/did/repository/corpname"/></field>
+        <field name="institution"><xsl:value-of select="/ead/eadheader/filedesc/publicationstmt/publisher"/></field>
         <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
@@ -76,7 +76,7 @@
       <field name="record_format">atom</field>
       <!-- Basic metadata -->
       <field name="id"><xsl:value-of select="did/unitid"/></field>
-      <field name="institution"><xsl:value-of select="did/repository/corpname"/></field>
+      <field name="institution"><xsl:value-of select="/ead/eadheader/filedesc/publicationstmt/publisher"/></field>
       <field name="title"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_full"><xsl:value-of select="did/unittitle"/></field>
       <field name="title_short"><xsl:value-of select="did/unittitle"/></field>
