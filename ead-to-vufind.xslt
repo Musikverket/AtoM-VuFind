@@ -21,6 +21,7 @@
         <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="level_of_description"><xsl:value-of select="/ead/archdesc/@level"/></field>
 
         <!-- Dates field. The date here can serve a number of purposes in AtoM (created, archived, etc), but this does
              not for the moment carry over in the EAD output -->
@@ -95,6 +96,15 @@
       <!-- Id and title for the record we want to index -->
       <field name="is_hierarchy_id"><xsl:value-of select="did/unitid"/></field>
       <field name="is_hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
+      <!-- Pick out Level of description based on presence of "otherlevel" attribute -->
+      <xsl:choose>
+        <xsl:when test="@level='otherlevel'">
+          <field name="level_of_description"><xsl:value-of select="@otherlevel"/></field>
+        </xsl:when>
+        <xsl:otherwise>
+          <field name="level_of_description"><xsl:value-of select="@level"/></field>
+        </xsl:otherwise>
+      </xsl:choose>
       <!-- Here we set hierarchy_browse to parent title and id (from the variables above).
            Required if the collection identifier is "All". -->
       <field name="hierarchy_browse"><xsl:value-of select="$parent_title"/>{{{_ID_}}}<xsl:value-of select="$parent_id"/></field>
