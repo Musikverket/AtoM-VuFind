@@ -11,6 +11,15 @@
         <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="institution"><xsl:value-of select="/ead/eadheader/filedesc/publicationstmt/publisher"/></field>
         <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <!-- Use if we want to apply description level to top record
+        <field name="title">
+          <xsl:text>[</xsl:text>
+          <xsl:call-template name="levelTranslation">
+            <xsl:with-param name="level" select="/ead/archdesc/@level"/>
+          </xsl:call-template>
+          <xsl:text>] </xsl:text>
+          <xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/>
+        </field> -->
         <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
@@ -29,6 +38,9 @@
           <xsl:value-of select="/ead/archdesc/did/unitid"/>
         </field>
         <field name="level_of_description_str"><xsl:value-of select="/ead/archdesc/@level"/></field>
+        <!-- <field name="title_in_hierarchy">
+          <xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/>
+        </field> -->
 
         <!-- Dates field. The date here can serve a number of purposes in AtoM (created, archived, etc), but this does
              not for the moment carry over in the EAD output -->
@@ -135,6 +147,23 @@
           <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
         </xsl:if>
       </xsl:for-each>
+      <field name="title_in_hierarchy">
+        <xsl:text>[</xsl:text>
+        <xsl:choose>
+          <xsl:when test="@level='otherlevel'">
+            <xsl:call-template name="levelTranslation">
+              <xsl:with-param name="level" select="@otherlevel"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="levelTranslation">
+              <xsl:with-param name="level" select="@level"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text>] </xsl:text>
+        <xsl:value-of select="did/unittitle"/>
+      </field>
 
       <!-- Physical description -->
       <xsl:if test="did/physdesc">
@@ -160,5 +189,26 @@
   </xsl:template>
   <xsl:template match="text()">
     <field name="contents"><xsl:value-of select="current()"/></field>
+  </xsl:template>
+  <!-- Baked-in translation of decription levels -->
+  <xsl:template name="levelTranslation">
+    <xsl:param name="level"/>
+    <xsl:choose>
+      <xsl:when test="$level='fonds'">
+        <xsl:text>Arkiv</xsl:text>
+      </xsl:when>
+      <xsl:when test="$level='collection'">
+        <xsl:text>Samling</xsl:text>
+      </xsl:when>
+      <xsl:when test="$level='series'">
+        <xsl:text>Serie</xsl:text>
+      </xsl:when>
+      <xsl:when test="$level='heading'">
+        <xsl:text>Rubrik</xsl:text>
+      </xsl:when>
+      <xsl:when test="$level='volume'">
+        <xsl:text>Volym</xsl:text>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>
