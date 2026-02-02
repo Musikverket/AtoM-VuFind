@@ -162,6 +162,8 @@
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text>] </xsl:text>
+        <xsl:value-of select="substring-after(substring-after(did/unitid, $parent_id), '-')"/>
+        <xsl:text> - </xsl:text>
         <xsl:value-of select="did/unittitle"/>
       </field>
 
