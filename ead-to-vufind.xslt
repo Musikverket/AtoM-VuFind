@@ -145,10 +145,11 @@
       <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="/ead/archdesc/did/unitid"/></field>
       <xsl:for-each select="ancestor::c">
         <field name="hierarchy_all_parents_str_mv"><xsl:value-of select="did/unitid"/></field>
-        <xsl:if test="controlaccess/subject">
+        <!-- Use following if we want subjects to be inherited -->
+        <!-- <xsl:if test="controlaccess/subject">
           <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
           <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
-        </xsl:if>
+        </xsl:if> -->
       </xsl:for-each>
       <field name="title_in_hierarchy">
         <xsl:text>[</xsl:text>
