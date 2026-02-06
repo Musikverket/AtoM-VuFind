@@ -1,7 +1,7 @@
 # AtoM EAD to VuFind Solr
 
 ## Semantic and metadata fields
-| Solr field                 | EAD field (informal)                                                      | English term           | Swedish term            | Comments                                            |
+| Solr field                 | EAD field (informal description, see xslt for exact)                      | English term           | Swedish term            | Comments                                            |
 |:---------------------------|:--------------------------------------------------------------------------|:-----------------------|:------------------------|:----------------------------------------------------|
 | record_format              |                                                                           |                        |                         | Always 'atom'                                       |
 | id                         | did/unitid                                                                |                        |                         |                                                     |
