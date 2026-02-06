@@ -15,7 +15,7 @@
 | physical                   | did/physdesc                                                              | Extent and medium      | Omfång och medium       |                                                     |
 | archival_history_str       | /ead/archdesc/custodhist                                                  | Archival history       | Arkivhistorik           |                                                     |
 | description_identifier_str | /ead/archdesc/odd[@type = 'descriptionIdentifier']                        | Description identifier | Beskrivningssignum      |                                                     |
-| url                        | /ead/eadheader/eadid/@url and /ead/archdesc/did/dao[@linktype = 'simple'] |                        |                         | Link to record and link(s) to material              |
+| url                        | /ead/eadheader/eadid/@url and /ead/archdesc/did/dao[@linktype = 'simple'] |                        |                         | Link to record in AtoM and link(s) to material      |
 | topic                      | controlaccess/subject                                                     | Subject access points  | Sökingångar på ämne     |                                                     |
 | topic_facet                | controlaccess/subject                                                     |                        |                         |                                                     |
 | contents                   | scopecontent                                                              | Scope and content      | Omfattning och innehåll | Multivalue, each text-node becomes a contents field |
