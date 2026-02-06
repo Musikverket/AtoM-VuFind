@@ -19,3 +19,17 @@
 | topic                      | controlaccess/subject                                                     | Subject access points  | Sökingångar på ämne     |                                                     |
 | topic_facet                | controlaccess/subject                                                     |                        |                         |                                                     |
 | contents                   | scopecontent                                                              | Scope and content      | Omfattning och innehåll | Multivalue, each text-node becomes a contents field |
+
+## Hierarchical fields
+See [description on VuFind.org](https://vufind.org/wiki/indexing:hierarchies_and_collections)
+    - hierarchytype
+    - hierarchy_top_id
+    - hierarchy_top_title
+    - hierarchy_parent_id
+    - hierarchy_parent_title
+    - hierarchy_sequence
+    - is_hierarchy_id
+    - is_hierarchy_title
+    - hierarchy_browse
+    - hierarchy_all_parents_str_mv
+    - title_in_hierarchy
