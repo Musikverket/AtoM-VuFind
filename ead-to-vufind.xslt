@@ -56,11 +56,19 @@
           <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
           <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
         </xsl:if>
+        <!-- Archival history/Arkivhistorik -->
+        <xsl:if test="/ead/archdesc/custodhist">
+          <field name="archival_history"><xsl:value-of select="/ead/archdesc/custodhist"/></field>
+        </xsl:if>
+        <!-- Description identifier/Beskrivningssignum -->
+        <xsl:if test="/ead/archdesc/odd[@type = 'descriptionIdentifier']">
+          <field name="description_identifier"><xsl:value-of select="/ead/archdesc/odd[@type = 'descriptionIdentifier']/p"/></field>
+        </xsl:if>
         <!-- Link to AtoM record -->
         <field name="url"><xsl:value-of select="/ead/eadheader/eadid/@url"/></field>
         <!-- Link to AtoM fulltext -->
         <xsl:if test="/ead/archdesc/did/dao[@linktype = 'simple']">
-          <field name="url"><xsl:value-of select="/ead/archdesc/did/dao/@href"/></field>
+          <field name="url"><xsl:value-of select="/ead/archdesc/did/dao[@linktype = 'simple']/@href"/></field>
         </xsl:if>
         <!-- Table of contents -->
         <xsl:apply-templates select="/ead/archdesc/scopecontent/p/text()"/>
