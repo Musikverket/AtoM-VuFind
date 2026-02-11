@@ -11,7 +11,7 @@
         <field name="id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="institution"><xsl:value-of select="/ead/eadheader/filedesc/publicationstmt/publisher"/></field>
         <field name="title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
-        <!-- Use if we want to apply description level to top record
+        <!-- Use if we want to apply description level to top record title
         <field name="title">
           <xsl:text>[</xsl:text>
           <xsl:call-template name="levelTranslation">
