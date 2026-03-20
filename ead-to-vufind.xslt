@@ -22,7 +22,7 @@
         </field> -->
         <field name="title_full"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="title_short"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
-        <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+        <field name="archive_name_str"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
 
         <!-- Hierarchical data for the root record -->
         <field name="hierarchytype"/>
@@ -112,7 +112,7 @@
       <!-- Hierarchical data -->
       <!-- We index an entire collection, so top_id and top_title will be the same for all records in
            the collection. -->
-      <field name="collection"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
+      <field name="archive_name_str"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
       <field name="hierarchytype"/>
       <field name="hierarchy_top_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
       <field name="hierarchy_top_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
