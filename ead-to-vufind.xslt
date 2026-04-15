@@ -188,6 +188,12 @@
         <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
         <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
       </xsl:if>
+      <!-- Link to AtoM record -->
+      <field name="url"><xsl:value-of select="/ead/eadheader/eadid/@url"/></field>
+      <!-- Link to AtoM fulltext -->
+      <xsl:if test="/ead/archdesc/did/dao[@linktype = 'simple']">
+        <field name="url"><xsl:value-of select="/ead/archdesc/did/dao[@linktype = 'simple']/@href"/></field>
+      </xsl:if>
       <!-- Table of contents -->
       <xsl:apply-templates select="scopecontent/p/text()"/>
     </doc>
