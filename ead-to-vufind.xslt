@@ -30,10 +30,6 @@
         <field name="is_hierarchy_id"><xsl:value-of select="/ead/eadheader/eadid"/></field>
         <field name="is_hierarchy_title"><xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/></field>
         <field name="reference_code_str">
-          <xsl:value-of select="/ead/archdesc/did/unitid/@countrycode"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="/ead/archdesc/did/unitid/@repositorycode"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="/ead/archdesc/did/unitid"/>
         </field>
         <field name="level_of_description_str"><xsl:value-of select="/ead/archdesc/@level"/></field>
@@ -127,10 +123,6 @@
       <field name="is_hierarchy_title"><xsl:value-of select="did/unittitle"/></field>
 
       <field name="reference_code_str">
-        <xsl:value-of select="/ead/archdesc/did/unitid/@countrycode"/>
-        <xsl:text> </xsl:text>
-        <xsl:value-of select="/ead/archdesc/did/unitid/@repositorycode"/>
-        <xsl:text> </xsl:text>
         <xsl:value-of select="did/unitid"/>
       </field>
       <!-- Pick out Level of description based on presence of "otherlevel" attribute -->
