@@ -194,6 +194,13 @@
       <xsl:if test="/ead/archdesc/did/dao[@linktype = 'simple']">
         <field name="url"><xsl:value-of select="/ead/archdesc/did/dao[@linktype = 'simple']/@href"/></field>
       </xsl:if>
+      <xsl:if test="not(@level='collection') and not(@level='fonds') and not(@level='series')">
+        <field name="order_url_str">
+          <xsl:text>mailto:specialsamlingar@musikochteaterbiblioteket.se?subject=</xsl:text>
+          <xsl:value-of select="did/unitid"/>
+          <xsl:text>&amp;body=Namn:%0D%0ABesöksdatum:%0D%0AÖvrigt:</xsl:text>
+        </field>
+      </xsl:if>
       <!-- Table of contents -->
       <xsl:apply-templates select="scopecontent/p/text()"/>
     </doc>
