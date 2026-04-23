@@ -32,7 +32,17 @@
         <field name="reference_code_str">
           <xsl:value-of select="/ead/archdesc/did/unitid"/>
         </field>
-        <field name="level_of_description_str"><xsl:value-of select="/ead/archdesc/@level"/></field>
+        <field name="level_of_description_str">
+          <!-- Replace 'collection' with 'collection_atom' to disambiguate for translation purposes. -->
+          <xsl:choose>
+            <xsl:when test="/ead/archdesc/@level='collection'">
+              <xsl:text>collection_atom</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="/ead/archdesc/@level"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </field>
         <!-- <field name="title_in_hierarchy">
           <xsl:value-of select="/ead/eadheader/filedesc/titlestmt/titleproper"/>
         </field> -->
