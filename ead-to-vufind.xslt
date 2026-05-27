@@ -138,7 +138,16 @@
       <!-- Pick out Level of description based on presence of "otherlevel" attribute -->
       <xsl:choose>
         <xsl:when test="@level='otherlevel'">
-          <field name="level_of_description_str"><xsl:value-of select="@otherlevel"/></field>
+          <field name="level_of_description_str">
+            <xsl:choose>
+              <xsl:when test="@otherlevel='object'">
+                <xsl:text>object_atom</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="@otherlevel"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </field>
         </xsl:when>
         <xsl:otherwise>
           <field name="level_of_description_str"><xsl:value-of select="@level"/></field>
