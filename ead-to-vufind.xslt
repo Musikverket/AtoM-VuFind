@@ -126,7 +126,7 @@
       <field name="hierarchy_parent_title"><xsl:value-of select="$parent_title"/></field>
       <!-- Sort child elements on the same level in the hierarchy. Here we sort on unitid. -->
       <field name="hierarchy_sequence">
-        <xsl:value-of select="substring(concat('00000000', $this_id), string-length($this_id) + 1)"/>
+        <xsl:value-of select="format-number(count(preceding-sibling::c), '000000')"/>
       </field>
       <!-- Id and title for the record we want to index -->
       <field name="is_hierarchy_id"><xsl:value-of select="did/unitid"/></field>
