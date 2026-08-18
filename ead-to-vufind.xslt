@@ -61,6 +61,11 @@
           <field name="topic"><xsl:value-of select="."/></field>
           <field name="topic_facet"><xsl:value-of select="."/></field>
         </xsl:for-each>
+        <!-- Genre access points -->
+        <xsl:for-each select="/ead/archdesc/controlaccess/genreform">
+          <field name="genre"><xsl:value-of select="."/></field>
+          <field name="genre_facet"><xsl:value-of select="."/></field>
+        </xsl:for-each>
         <!-- Archival history/Arkivhistorik -->
         <xsl:if test="/ead/archdesc/custodhist">
           <field name="archival_history_str"><xsl:value-of select="/ead/archdesc/custodhist"/></field>
@@ -201,6 +206,11 @@
       <xsl:for-each select="controlaccess/subject">
         <field name="topic"><xsl:value-of select="."/></field>
         <field name="topic_facet"><xsl:value-of select="."/></field>
+      </xsl:for-each>
+      <!-- Genre access points -->
+      <xsl:for-each select="controlaccess/genreform">
+        <field name="genre"><xsl:value-of select="."/></field>
+        <field name="genre_facet"><xsl:value-of select="."/></field>
       </xsl:for-each>
       <!-- Link to AtoM record -->
       <field name="url"><xsl:value-of select="/ead/eadheader/eadid/@url"/></field>
