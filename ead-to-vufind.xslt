@@ -57,10 +57,10 @@
           <field name="physical"><xsl:value-of select="/ead/archdesc/did/physdesc"/></field>
         </xsl:if>
         <!-- Subject access points -->
-        <xsl:if test="/ead/archdesc/controlaccess/subject">
-          <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-          <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-        </xsl:if>
+        <xsl:for-each select="/ead/archdesc/controlaccess/subject">
+          <field name="topic"><xsl:value-of select="."/></field>
+          <field name="topic_facet"><xsl:value-of select="."/></field>
+        </xsl:for-each>
         <!-- Archival history/Arkivhistorik -->
         <xsl:if test="/ead/archdesc/custodhist">
           <field name="archival_history_str"><xsl:value-of select="/ead/archdesc/custodhist"/></field>
@@ -198,15 +198,10 @@
       <xsl:if test="did/unitdate">
         <field name="dates_str"><xsl:value-of select="did/unitdate"/></field>
       </xsl:if>
-      <xsl:if test="controlaccess/subject">
-        <field name="topic"><xsl:value-of select="controlaccess/subject"/></field>
-        <field name="topic_facet"><xsl:value-of select="controlaccess/subject"/></field>
-      </xsl:if>
-      <!-- Subject access points -->
-      <xsl:if test="/ead/archdesc/controlaccess/subject">
-        <field name="topic"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-        <field name="topic_facet"><xsl:value-of select="/ead/archdesc/controlaccess/subject"/></field>
-      </xsl:if>
+      <xsl:for-each select="controlaccess/subject">
+        <field name="topic"><xsl:value-of select="."/></field>
+        <field name="topic_facet"><xsl:value-of select="."/></field>
+      </xsl:for-each>
       <!-- Link to AtoM record -->
       <field name="url"><xsl:value-of select="/ead/eadheader/eadid/@url"/></field>
       <!-- Link to AtoM fulltext -->
